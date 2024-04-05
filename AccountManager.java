@@ -63,9 +63,50 @@ public class AccountManager {
         return balance;
     }
 
-    public String transactionHistory() {
+    public String transactionHistory(String accountNumber) {
 
+        //Variables
+        String filename = "transactions.csv"; //Filename
+        BufferedReader reader = null; //Buffered reader
+        String line = ""; //Line string for storing each line
         String transactions = "";
+
+        //Tries the code
+        try {
+            //Instantiating file reader
+            reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
+            int lineCounter = 0; //Line counter to track line number
+
+            //Iterate through each line
+            while((line = reader.readLine()) != null) {
+
+                //If statement to skip the first line
+                if (lineCounter != 0) {
+                    //Split line string at each comma and store
+                    String[] accountString = line.split(","); //Split by comma
+
+                    if (accountString[0].equals(accountNumber)) {
+                        
+                        transactions = transactions + "\n" + line;
+                    }
+                }
+                ++lineCounter;
+            }
+        }
+        catch(Exception e) { //Catches all exceptions
+
+            System.out.println("ERROR!!!!");
+            e.printStackTrace();
+        }
+        finally {
+
+            //Closing reader
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         return transactions;
     }

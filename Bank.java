@@ -309,15 +309,31 @@ public class Bank {
         accountTHNumberField.setBounds(250,90,300,50);
         transactionHistory.add(accountTHNumberField);
 
+        //Balance label
+        JLabel transactionsListingLabel = new JLabel("Transactions");
+        transactionsListingLabel.setFont(new Font("Times", Font.BOLD, 30));
+        transactionsListingLabel.setBounds(25,150,400,50);
+        transactionsListingLabel.setOpaque(true);
+        transactionsListingLabel.setVisible(true);
+
+        JTextArea returnedTransactionsArea = new JTextArea("");
+        returnedTransactionsArea.setFont(new Font("Times", Font.PLAIN, 20));
+        returnedTransactionsArea.setBounds(25,200,600,250);
+        returnedTransactionsArea.setEditable(false);
+        returnedTransactionsArea.setOpaque(true);
+        returnedTransactionsArea.setVisible(true);
+
+        transactionHistory.add(transactionsListingLabel);
+        transactionHistory.add(returnedTransactionsArea);
+
         //Inquiry button
         JButton generateTransactionHistory = new JButton("History");
         generateTransactionHistory.setBounds(560,80,125,75);
         generateTransactionHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("FOR SUPER EARTH!!!!");
-
-                String accountNumberString = accountTHNumberField.getText();
+                String returnedTransactions = accountManager.transactionHistory(accountTHNumberField.getText());
+                returnedTransactionsArea.setText("Account Number,Transaction Amount,Date\n" + returnedTransactions);
             }
         });
         transactionHistory.add(generateTransactionHistory);
