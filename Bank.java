@@ -11,6 +11,7 @@ import javax.swing.*;
 public class Bank {
 
     //Instantiation
+    AccountManager accountManager = new AccountManager();
     JFrame frame = new JFrame(); //JFrame
     JPanel masterPanel = new JPanel(); //Master panel to hold all other panels
     JPanel logoPanel = new JPanel(); //Logo panel
@@ -48,7 +49,7 @@ public class Bank {
             }
         });
          
-        JButton balanceButton = new JButton("Create Account");
+        JButton balanceButton = new JButton("Balance Inquiry");
         balanceButton.setPreferredSize(new Dimension(200,100));
         balanceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +61,7 @@ public class Bank {
             }
         });
 
-        JButton transactionHButton = new JButton("Create Account");
+        JButton transactionHButton = new JButton("Transaction History");
         transactionHButton.setPreferredSize(new Dimension(200,100));
         transactionHButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -264,6 +265,14 @@ public class Bank {
         accountBField.setBounds(250,90,300,50);
         balanceInquiry.add(accountBField);
 
+        //Balance label
+        JLabel returnedBalanceLabel = new JLabel("Balance: ");
+        returnedBalanceLabel.setFont(new Font("Times", Font.BOLD, 50));
+        returnedBalanceLabel.setBounds(25,300,400,50);
+        returnedBalanceLabel.setOpaque(true);
+        returnedBalanceLabel.setVisible(true);
+        balanceInquiry.add(returnedBalanceLabel);
+
         //Inquiry button
         JButton generateBalanceInquiry = new JButton("Inquire");
         generateBalanceInquiry.setBounds(560,80,125,75);
@@ -273,6 +282,10 @@ public class Bank {
                 System.out.println("Here are the numbers");
 
                 String accountNumberString = accountBField.getText();
+                String balance = accountManager.balanceInquiry(accountBField.getText());
+                System.out.println(balance);
+                returnedBalanceLabel.setText("Balance: " + balance);
+                returnedBalanceLabel.setVisible(true);
             }
         });
         balanceInquiry.add(generateBalanceInquiry);
