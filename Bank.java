@@ -108,17 +108,13 @@ public class Bank {
         buttonPanel.add(transactionHButton);
 
         //Master Panel -------------------------------------------------------------
-        //masterPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
         masterPanel.setBounds(0,0,700,700);
-        //masterPanel.setLayout(new GridLayout(3, 1));
         masterPanel.setLayout(null);
-        //masterPanel.setBackground(new Color(0,0,0));
         masterPanel.add(logoPanel);
         masterPanel.add(buttonPanel);   
         masterPanel.add(functionPane);
 
         //Function Pane -------------------------------------------------------------
-        //functionPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 500, 500));
         functionPane.setBounds(0,200,700,700);
         functionPane.setOpaque(true);
 
@@ -128,12 +124,10 @@ public class Bank {
         functionPane.add(transactionHistory, Integer.valueOf(0));
 
         //Account Creator Panel -------------------------------------------------------------
-        //accountCreator.setBorder(BorderFactory.createEmptyBorder(0,0,400,400));
         accountCreator.setBounds(0,0,700,500);
         accountCreator.setLayout(null);
         accountCreator.setOpaque(true);
         accountCreator.setVisible(false);
-        //accountCreator.setBackground(Color.BLUE);
 
         //Title
         JLabel accountLabel = new JLabel("Account Creation");
@@ -158,17 +152,17 @@ public class Bank {
         accountCreator.add(accountCTypeLabel);
 
         //Text Areas
-        JTextField accountCName = new JTextField(); //Account name field
-        accountCName.setBounds(250,90,300,50);
-        accountCreator.add(accountCName);
+        JTextField accountCNameField = new JTextField(); //Account name field
+        accountCNameField.setBounds(250,90,300,50);
+        accountCreator.add(accountCNameField);
 
-        JTextField accountCInitialDeposit = new JTextField(); //Initial deposit field
-        accountCInitialDeposit.setBounds(300,190,150,50);
-        accountCreator.add(accountCInitialDeposit);
+        JTextField accountCInitialDepositField = new JTextField(); //Initial deposit field
+        accountCInitialDepositField.setBounds(300,190,150,50);
+        accountCreator.add(accountCInitialDepositField);
 
-        JTextField accountCType = new JTextField(); //Account type field
-        accountCType.setBounds(250,290,300,50);
-        accountCreator.add(accountCType);
+        JTextField accountCTypeField = new JTextField(); //Account type field
+        accountCTypeField.setBounds(250,290,300,50);
+        accountCreator.add(accountCTypeField);
 
         //Creation button
         JButton generateAccount = new JButton("Create Account");
@@ -177,6 +171,11 @@ public class Bank {
             public void actionPerformed(ActionEvent e) {
 
                 System.out.println("Lesgooo");
+
+                String accountNameString = accountCNameField.getText();
+                String accountInitialDepositString = accountCInitialDepositField.getText();
+                String accountCTypeString = accountCTypeField.getText();
+
             }
         });
         accountCreator.add(generateAccount);
@@ -221,6 +220,9 @@ public class Bank {
             public void actionPerformed(ActionEvent e) {
 
                 System.out.println("Where's that damn mule");
+
+                String accountNumberString = accountNumField.getText();
+                String transactionAmountString = transactionAmountField.getText();
             }
         });
         transactionKiosk.add(generateDeposit);
@@ -232,6 +234,9 @@ public class Bank {
             public void actionPerformed(ActionEvent e) {
 
                 System.out.println("Supercredits found");
+
+                String accountNumberString = accountNumField.getText();
+                String transactionAmountString = transactionAmountField.getText();
             }
         });
         transactionKiosk.add(generateWithdrawal);
@@ -266,6 +271,8 @@ public class Bank {
             public void actionPerformed(ActionEvent e) {
 
                 System.out.println("Here are the numbers");
+
+                String accountNumberString = accountBField.getText();
             }
         });
         balanceInquiry.add(generateBalanceInquiry);
@@ -300,6 +307,8 @@ public class Bank {
             public void actionPerformed(ActionEvent e) {
 
                 System.out.println("FOR SUPER EARTH!!!!");
+
+                String accountNumberString = accountTHNumberField.getText();
             }
         });
         transactionHistory.add(generateTransactionHistory);
