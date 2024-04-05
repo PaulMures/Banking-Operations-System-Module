@@ -18,7 +18,7 @@ public class AccountManager {
     public String balanceInquiry(String accountNumber) {
 
         //Variables
-        String filename = "bank_accounts.csv"; //Filename
+        String filename = "accounts.csv"; //Filename
         BufferedReader reader = null; //Buffered reader
         String line = ""; //Line string for storing each line
         String balance = "";
