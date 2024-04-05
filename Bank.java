@@ -279,12 +279,8 @@ public class Bank {
         generateBalanceInquiry.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("Here are the numbers");
-
-                String accountNumberString = accountBField.getText();
-                String balance = accountManager.balanceInquiry(accountBField.getText());
-                System.out.println(balance);
-                returnedBalanceLabel.setText("Balance: " + balance);
+                String returnedBalance = accountManager.balanceInquiry(accountBField.getText());
+                returnedBalanceLabel.setText("Balance: $" + returnedBalance);
                 returnedBalanceLabel.setVisible(true);
             }
         });
