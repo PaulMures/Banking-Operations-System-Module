@@ -173,9 +173,7 @@ public class Bank {
 
                 System.out.println("Lesgooo");
 
-                String accountNameString = accountCNameField.getText();
-                String accountInitialDepositString = accountCInitialDepositField.getText();
-                String accountCTypeString = accountCTypeField.getText();
+                accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
 
             }
         });
