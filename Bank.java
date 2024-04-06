@@ -171,9 +171,22 @@ public class Bank {
         generateAccount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("Lesgooo");
+                try {
 
-                accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
+                    if (Integer.parseInt(accountCInitialDepositField.getText()) >= 0) {
+
+                        accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
+                    }
+                    else {
+                        //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    }
+
+                }
+                catch (Exception i) {
+
+                    //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                }
 
             }
         });
@@ -218,10 +231,22 @@ public class Bank {
         generateDeposit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("Where's that damn mule");
+                try {
 
-                String accountNumberString = accountNumField.getText();
-                String transactionAmountString = transactionAmountField.getText();
+                    if (Integer.parseInt(transactionAmountField.getText()) >= 0) {
+
+                        
+                    }
+                    else {
+                        //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    }
+
+                }
+                catch (Exception i) {
+
+                    //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                }
             }
         });
         transactionKiosk.add(generateDeposit);
@@ -232,10 +257,7 @@ public class Bank {
         generateWithdrawal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("Supercredits found");
-
-                String accountNumberString = accountNumField.getText();
-                String transactionAmountString = transactionAmountField.getText();
+                accountManager.newTransaction(accountNumField.getText(), ("Withdraw " + transactionAmountField.getText()), Integer.parseInt(transactionAmountField.getText()));
             }
         });
         transactionKiosk.add(generateWithdrawal);
