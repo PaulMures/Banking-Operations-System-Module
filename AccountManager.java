@@ -54,12 +54,12 @@ public class AccountManager {
                                 //If there's an identical number, add to tracker
                                 identicalNumberTracker++;
                             }
+                        }
 
-                            if (identicalNumberTracker == 0) {
+                        if (identicalNumberTracker == 0) {
 
-                                //If there are no identical numbers, the program can proceed
-                                accountNumberValid = true;
-                            }
+                            //If there are no identical numbers, the program can proceed
+                            accountNumberValid = true;
                         }
 
                     } while (accountNumberValid == false);
