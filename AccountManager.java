@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class AccountManager {
     
-    public void newAccount(String accountHolderName, String accountType, String initialDeposit) {
+    public String newAccount(String accountHolderName, String accountType, String initialDeposit) {
 
                 //Variables
                 String filename = "accounts.csv"; //Filename
@@ -68,6 +68,7 @@ public class AccountManager {
                     fileWriter.write(System.lineSeparator() + newAccountNumber + "," + accountHolderName + "," + accountType + "," + initialDeposit);
                     fileWriter.close();
 
+                    //Create transaction
                     newTransaction(newAccountNumber, "Deposit", Integer.parseInt(initialDeposit));
                 }
                 catch(Exception e) { //Catches all exceptions
@@ -84,6 +85,9 @@ public class AccountManager {
                         e.printStackTrace();
                     }
                 }
+
+                //Return account number
+                return newAccountNumber;
             }
 
     public boolean newTransaction(String accountNumber, String action, int actionAmount) {

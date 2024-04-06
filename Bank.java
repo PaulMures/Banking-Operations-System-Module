@@ -175,8 +175,8 @@ public class Bank {
 
                     if (Integer.parseInt(accountCInitialDepositField.getText()) >= 0) {
 
-                        accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
-                        JOptionPane.showMessageDialog(null, "Your account was created successfully", "Account Creation Completed", JOptionPane.INFORMATION_MESSAGE);
+                        String newAccountNumber = accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
+                        JOptionPane.showMessageDialog(null, ("Your account was created successfully!\nYour new account number is " + newAccountNumber), "Account Creation Completed", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
 
