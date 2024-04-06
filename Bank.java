@@ -257,7 +257,7 @@ public class Bank {
         generateWithdrawal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                accountManager.newTransaction(accountNumField.getText(), ("Withdraw " + transactionAmountField.getText()), Integer.parseInt(transactionAmountField.getText()));
+                accountManager.newTransaction(accountNumField.getText(), ("Withdraw"), Integer.parseInt(transactionAmountField.getText()));
             }
         });
         transactionKiosk.add(generateWithdrawal);
