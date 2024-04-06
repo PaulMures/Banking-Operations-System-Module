@@ -67,6 +67,8 @@ public class AccountManager {
                     //Write at end of file account info
                     fileWriter.write(System.lineSeparator() + newAccountNumber + "," + accountHolderName + "," + accountType + "," + initialDeposit);
                     fileWriter.close();
+
+                    newTransaction(newAccountNumber, "Deposit", Integer.parseInt(initialDeposit));
                 }
                 catch(Exception e) { //Catches all exceptions
         
@@ -84,55 +86,62 @@ public class AccountManager {
                 }
             }
 
-    public void newTransaction(String accountNumber, String action, int actionAmount) {
+    public boolean newTransaction(String accountNumber, String action, int actionAmount) {
 
-        updateBalance(accountNumber, action ,actionAmount);
+        boolean balanceUpdated = updateBalance(accountNumber, action ,actionAmount);
 
-        //Write transaction -------------------------------------------------------------
+        if (balanceUpdated) {
 
-        //Variables
-        BufferedWriter fileWriter = null;
-        String filename = "transactions.csv"; //Filename for transactions
+                //Write transaction -------------------------------------------------------------
 
-        //Get date
-        Calendar calendar = Calendar.getInstance(); //Instantiate calendar
-        String day, month, year;
+            //Variables
+            BufferedWriter fileWriter = null;
+            String filename = "transactions.csv"; //Filename for transactions
 
-        //If day is <10th
-        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+            //Get date
+            Calendar calendar = Calendar.getInstance(); //Instantiate calendar
+            String day, month, year;
 
-            //Put 0 in front
-            day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+            //If day is <10th
+            if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+
+                //Put 0 in front
+                day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+            }
+            else {
+                day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+            }
+
+            //If month is <10th
+            if (calendar.get(Calendar.MONTH) < 10) {
+        
+                //Put 0 in front
+                month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
+            }
+            else {
+                month = Integer.toString(calendar.get(Calendar.MONTH));
+            }
+
+            year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
+
+            String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
+
+            //Write at end of file the transaction
+            try {
+
+                fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename, with append = true
+                fileWriter.write(System.lineSeparator() + accountNumber + "," + action + " " + actionAmount + "," + date); //Writes to file
+                fileWriter.close(); //Close writer
+                return true;
+
+            } catch (IOException e) {
+                
+                e.printStackTrace();
+            }
         }
-        else {
-            day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
-        }
 
-        //If month is <10th
-        if (calendar.get(Calendar.MONTH) < 10) {
-    
-            //Put 0 in front
-            month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
-        }
-        else {
-            month = Integer.toString(calendar.get(Calendar.MONTH));
-        }
-
-        year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
-
-        String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
-
-        //Write at end of file the transaction
-        try {
-
-            fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename, with append = true
-            fileWriter.write(System.lineSeparator() + accountNumber + "," + action + " " + actionAmount + "," + date); //Writes to file
-            fileWriter.close(); //Close writer
-
-        } catch (IOException e) {
-            
-            e.printStackTrace();
-        }
+        //If balance was not valid, return false
+        return false;
     }
 
     public String balanceInquiry(String accountNumber) {
@@ -232,7 +241,7 @@ public class AccountManager {
 
     }
 
-    public void updateBalance(String accountNumber, String action, int actionAmount) {
+    public boolean updateBalance(String accountNumber, String action, int actionAmount) {
 
         //Variables
         String filename = "accounts.csv"; //Filename
@@ -258,8 +267,17 @@ public class AccountManager {
                     //If withdrawal
                     if (action.equals("Withdraw")) {
 
-                        //New balance
-                        newBalance = Integer.toString((Integer.parseInt(accountString[3])) - (actionAmount));
+                        if (actionAmount > Integer.parseInt(accountString[3])) {
+
+                            return false;
+
+                        }
+                        else {
+
+                            //New balance
+                            newBalance = Integer.toString((Integer.parseInt(accountString[3])) - (actionAmount));
+                        }
+                        
                     }
                     else { //Deposit
 
@@ -281,6 +299,7 @@ public class AccountManager {
             fileWriter = new BufferedWriter(new FileWriter(filename)); //Passes file writer which passes filename, with append = false
             fileWriter.write(accountsRewrite); //Writes to file
             fileWriter.close(); //Close writer
+            return true;
 
         }
         catch(Exception e) { //Catches all exceptions
@@ -297,12 +316,16 @@ public class AccountManager {
                 e.printStackTrace();
             }
         }
+
+        //If all goes wrong, return false
+        return false;
     }
 
-    public boolean validateAccountNumber(String accountNumber, String filename) {
+    public boolean validateAccountNumber(String accountNumber) {
 
         //Variables
         BufferedReader reader = null; //Buffered reader
+        String filename = "accounts.csv";
         String line = ""; //Line string for storing each line
         int validAccountTracker = 0;
 
@@ -349,4 +372,5 @@ public class AccountManager {
         //If all goes wrong return false
         return false;
     }
+
 }

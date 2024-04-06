@@ -176,16 +176,17 @@ public class Bank {
                     if (Integer.parseInt(accountCInitialDepositField.getText()) >= 0) {
 
                         accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
+                        JOptionPane.showMessageDialog(null, "Your account was created successfully", "Account Creation Completed", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
-                        //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+                        JOptionPane.showMessageDialog(null, "Initial Deposit amount invalid!\nMust be greater than or equal to 0", "Initial Deposit Invalid", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
                 catch (Exception i) {
 
-                    //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+                    JOptionPane.showMessageDialog(null, "Initial Deposit amount invalid!\nMust be a valid integer", "Initial Deposit Invalid", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -233,18 +234,38 @@ public class Bank {
 
                 try {
 
-                    if (Integer.parseInt(transactionAmountField.getText()) >= 0) {
+                    //Validate that the given number is a valid integer and is not negative or 0
+                    if (Integer.parseInt(transactionAmountField.getText()) > 0) {
 
-                        
+                        //Validate that the given number is not more than 1,000,000
+                        if (Integer.parseInt(transactionAmountField.getText()) <= 1000000) {
+
+                            //Check if account number is valid
+                            if (accountManager.validateAccountNumber(accountNumField.getText())) {
+
+                                //Generate transaction
+                                accountManager.newTransaction(accountNumField.getText(), "Deposit", Integer.parseInt(transactionAmountField.getText()));
+                                JOptionPane.showMessageDialog(null, "Your deposit was sucessfully processed", "Deposit Completed", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else {
+
+                                JOptionPane.showMessageDialog(null, "Account Number Invalid!\nMust be a valid account number", "Account Number Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else {
+
+                            JOptionPane.showMessageDialog(null, "Deposit amount invalid!\nCannot deposit more than $1,000,000 at a time", "Deposit Invalid", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     }
                     else {
-                        //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        JOptionPane.showMessageDialog(null, "Deposit amount invalid!\nMust be greater than 0", "Deposit Invalid", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
                 catch (Exception i) {
 
-                    //ADD POPUP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    JOptionPane.showMessageDialog(null, "Deposit amount invalid!\nMust be a valid integer", "Deposit Invalid", JOptionPane.ERROR_MESSAGE);
 
                 }
             }
@@ -257,7 +278,40 @@ public class Bank {
         generateWithdrawal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                accountManager.newTransaction(accountNumField.getText(), ("Withdraw"), Integer.parseInt(transactionAmountField.getText()));
+                try {
+
+                    //Validate that the given number is a valid integer and is not negative or 0
+                    if (Integer.parseInt(transactionAmountField.getText()) > 0) {
+
+                        //Check if account number is valid
+                        if (accountManager.validateAccountNumber(accountNumField.getText())) {
+
+                            //Generate transaction
+                            if (accountManager.newTransaction(accountNumField.getText(), "Withdraw", Integer.parseInt(transactionAmountField.getText()))) {
+
+                                JOptionPane.showMessageDialog(null, "Your withdrawal was sucessfully processed", "Withdrawal Completed", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else {
+
+                                JOptionPane.showMessageDialog(null, "Withdrawal amount invalid!\nWithdrawal cannot exceed account balance", "Withdrawal Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        else {
+
+                            JOptionPane.showMessageDialog(null, "Account Number Invalid!\nMust be a valid account number", "Account Number Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    }
+                    else {
+
+                        JOptionPane.showMessageDialog(null, "Withdrawal amount invalid!\nMust be greater than 0", "Withdrawal Invalid", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                }
+                catch (Exception i) {
+
+                    JOptionPane.showMessageDialog(null, "Withdrawal amount invalid!\nMust be a valid integer", "Withdrawal Invalid", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         transactionKiosk.add(generateWithdrawal);
@@ -299,9 +353,16 @@ public class Bank {
         generateBalanceInquiry.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                String returnedBalance = accountManager.balanceInquiry(accountBField.getText());
-                returnedBalanceLabel.setText("Balance: $" + returnedBalance);
-                returnedBalanceLabel.setVisible(true);
+                if (accountManager.validateAccountNumber(accountBField.getText())) {
+
+                    String returnedBalance = accountManager.balanceInquiry(accountBField.getText());
+                    returnedBalanceLabel.setText("Balance: $" + returnedBalance);
+                }
+                else {
+
+                    JOptionPane.showMessageDialog(null, "The given account number is invalid, please try again", "Invalid Account Number", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
         balanceInquiry.add(generateBalanceInquiry);
@@ -352,8 +413,16 @@ public class Bank {
         generateTransactionHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                String returnedTransactions = accountManager.transactionHistory(accountTHNumberField.getText());
-                returnedTransactionsArea.setText("Account Number,Transaction Amount,Date\n" + returnedTransactions);
+                if (accountManager.validateAccountNumber(accountTHNumberField.getText())) {
+
+                    String returnedTransactions = accountManager.transactionHistory(accountTHNumberField.getText());
+                    returnedTransactionsArea.setText("Account Number,Transaction Amount,Date\n" + returnedTransactions);
+                }
+                else {
+
+                    JOptionPane.showMessageDialog(null, "The given account number is invalid, please try again", "Invalid Account Number", JOptionPane.ERROR_MESSAGE);
+                }
+                
             }
         });
         transactionHistory.add(generateTransactionHistory);
