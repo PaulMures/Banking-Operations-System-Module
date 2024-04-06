@@ -86,56 +86,52 @@ public class AccountManager {
 
     public void newTransaction(String accountNumber, String action, int actionAmount) {
 
-        boolean accountValid = updateBalance(accountNumber, action ,actionAmount);
+        updateBalance(accountNumber, action ,actionAmount);
 
-        if (accountValid == true) {
+        //Write transaction -------------------------------------------------------------
 
-            //Write transaction -------------------------------------------------------------
+        //Variables
+        BufferedWriter fileWriter = null;
+        String filename = "transactions.csv"; //Filename for transactions
 
-            //Variables
-            BufferedWriter fileWriter = null;
-            String filename = "transactions.csv"; //Filename for transactions
+        //Get date
+        Calendar calendar = Calendar.getInstance(); //Instantiate calendar
+        String day, month, year;
 
-            //Get date
-            Calendar calendar = Calendar.getInstance(); //Instantiate calendar
-            String day, month, year;
+        //If day is <10th
+        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
 
-            //If day is <10th
-            if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+            //Put 0 in front
+            day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+        }
+        else {
+            day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+        }
 
-                //Put 0 in front
-                day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
-            }
-            else {
-                day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
-            }
+        //If month is <10th
+        if (calendar.get(Calendar.MONTH) < 10) {
+    
+            //Put 0 in front
+            month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
+        }
+        else {
+            month = Integer.toString(calendar.get(Calendar.MONTH));
+        }
 
-            //If month is <10th
-            if (calendar.get(Calendar.MONTH) < 10) {
-        
-                //Put 0 in front
-                month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
-            }
-            else {
-                month = Integer.toString(calendar.get(Calendar.MONTH));
-            }
+        year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
 
-            year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
+        String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
 
-            String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
+        //Write at end of file the transaction
+        try {
 
-            //Write at end of file the transaction
-            try {
+            fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename, with append = true
+            fileWriter.write(System.lineSeparator() + accountNumber + "," + action + " " + actionAmount + "," + date); //Writes to file
+            fileWriter.close(); //Close writer
 
-                fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename, with append = true
-                fileWriter.write(System.lineSeparator() + accountNumber + "," + action + " " + actionAmount + "," + date); //Writes to file
-                fileWriter.close(); //Close writer
-
-            } catch (IOException e) {
-                
-                e.printStackTrace();
-            }
-
+        } catch (IOException e) {
+            
+            e.printStackTrace();
         }
     }
 
@@ -233,85 +229,124 @@ public class AccountManager {
         }
 
         return transactions;
+
     }
 
-    public boolean updateBalance(String accountNumber, String action, int actionAmount) {
+    public void updateBalance(String accountNumber, String action, int actionAmount) {
 
-                //Variables
-                String filename = "accounts.csv"; //Filename
-                BufferedReader reader = null; //Buffered reader
-                BufferedWriter fileWriter = null; //Buffered writer
-                String line = ""; //Line string for storing each line
-                String accountsRewrite = "";
-                String newBalance = "";
-                int validAccountTracker = 0;
-        
-                //Tries the code
-                try {
-                    //Instantiating file reader
-                    reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
-        
-                    //Iterate through each line
-                    while((line = reader.readLine()) != null) {
-        
-                        //Split line string at each comma and store
-                        String[] accountString = line.split(","); //Split by comma
+        //Variables
+        String filename = "accounts.csv"; //Filename
+        BufferedReader reader = null; //Buffered reader
+        BufferedWriter fileWriter = null; //Buffered writer
+        String line = ""; //Line string for storing each line
+        String accountsRewrite = "";
+        String newBalance = "";
 
-                        if (accountString[0].equals(accountNumber)) {
+        //Tries the code
+        try {
+            //Instantiating file reader
+            reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
 
-                            //If withdrawal
-                            if (action.equals("Withdraw")) {
+            //Iterate through each line
+            while((line = reader.readLine()) != null) {
 
-                                //New balance
-                                newBalance = Integer.toString((Integer.parseInt(accountString[3])) - (actionAmount));
-                            }
-                            else { //Deposit
+                //Split line string at each comma and store
+                String[] accountString = line.split(","); //Split by comma
 
-                                //New balance
-                                newBalance = Integer.toString((Integer.parseInt(accountString[3])) + (actionAmount));
-                            }
+                if (accountString[0].equals(accountNumber)) {
 
-                            //Rewrite line then store
-                            accountsRewrite = accountsRewrite + line.replace(accountString[3], newBalance) + System.lineSeparator();
-                            validAccountTracker++;
+                    //If withdrawal
+                    if (action.equals("Withdraw")) {
 
-                        }
-                        else {
+                        //New balance
+                        newBalance = Integer.toString((Integer.parseInt(accountString[3])) - (actionAmount));
+                    }
+                    else { //Deposit
 
-                            accountsRewrite = accountsRewrite + line + System.lineSeparator();
-                        }
+                        //New balance
+                        newBalance = Integer.toString((Integer.parseInt(accountString[3])) + (actionAmount));
                     }
 
-                    if (validAccountTracker == 0) {
+                    //Rewrite line then store
+                    accountsRewrite = accountsRewrite + line.replace(accountString[3], newBalance) + System.lineSeparator();
 
-                        System.out.println("Account not found");
-                        return false;
-                    }
-                    else {
-
-                        //Write new file
-                        fileWriter = new BufferedWriter(new FileWriter(filename)); //Passes file writer which passes filename, with append = false
-                        fileWriter.write(accountsRewrite); //Writes to file
-                        fileWriter.close(); //Close writer
-                        return true;
-                    }
                 }
-                catch(Exception e) { //Catches all exceptions
-        
-                    System.out.println("ERROR!!!!");
-                    e.printStackTrace();
+                else {
+
+                    accountsRewrite = accountsRewrite + line + System.lineSeparator();
                 }
-                finally {
-        
-                    //Closing reader
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            }
+
+            //Write new file
+            fileWriter = new BufferedWriter(new FileWriter(filename)); //Passes file writer which passes filename, with append = false
+            fileWriter.write(accountsRewrite); //Writes to file
+            fileWriter.close(); //Close writer
+
+        }
+        catch(Exception e) { //Catches all exceptions
+
+            System.out.println("ERROR!!!!");
+            e.printStackTrace();
+        }
+        finally {
+
+            //Closing reader
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean validateAccountNumber(String accountNumber, String filename) {
+
+        //Variables
+        BufferedReader reader = null; //Buffered reader
+        String line = ""; //Line string for storing each line
+        int validAccountTracker = 0;
+
+        //Tries the code
+        try {
+            //Instantiating file reader
+            reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
+
+            //Iterate through each line
+            while((line = reader.readLine()) != null) {
+
+                //Split line string at each comma and store
+                String[] accountString = line.split(","); //Split by comma
+
+                if (accountString[0].equals(accountNumber)) {
+                    
+                    validAccountTracker++;
                 }
-        
-        //If all goes wrong, return false
+            }
+
+            if (validAccountTracker > 0) {
+
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        catch(Exception e) { //Catches all exceptions
+
+            System.out.println("ERROR!!!!");
+            e.printStackTrace();
+        }
+        finally {
+
+            //Closing reader
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //If all goes wrong return false
         return false;
     }
 }
