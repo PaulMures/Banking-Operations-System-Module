@@ -113,23 +113,23 @@ public class AccountManager {
             if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
 
                 //Put 0 in front
-                day = "0" + Double.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
             }
             else {
-                day = Double.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
             }
 
             //If month is <10th
             if (calendar.get(Calendar.MONTH) < 10) {
         
                 //Put 0 in front
-                month = "0" + Double.toString(calendar.get(Calendar.MONTH));
+                month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
             }
             else {
-                month = Double.toString(calendar.get(Calendar.MONTH));
+                month = Integer.toString(calendar.get(Calendar.MONTH));
             }
 
-            year = Double.toString(calendar.get(Calendar.YEAR)); //Year string
+            year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
 
             String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
 
