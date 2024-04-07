@@ -260,7 +260,7 @@ public class Bank {
                             if (accountManager.validateAccountNumber(accountNumField.getText())) {
 
                                 //Generate transaction
-                                accountManager.newTransaction(accountNumField.getText(), "Deposit", Double.parseDouble(transactionAmountField.getText()));
+                                accountManager.newTransaction(accountNumField.getText(), "Deposit", Double.parseDouble(transactionAmountField.getText()), false);
                                 JOptionPane.showMessageDialog(null, "Your deposit was sucessfully processed", "Deposit Completed", JOptionPane.INFORMATION_MESSAGE);
                             }
                             else {
@@ -304,7 +304,7 @@ public class Bank {
                         if (accountManager.validateAccountNumber(accountNumField.getText())) {
 
                             //Generate transaction
-                            if (accountManager.newTransaction(accountNumField.getText(), "Withdraw", Double.parseDouble(transactionAmountField.getText()))) {
+                            if (accountManager.newTransaction(accountNumField.getText(), "Withdraw", Double.parseDouble(transactionAmountField.getText()), false)) {
 
                                 JOptionPane.showMessageDialog(null, "Your withdrawal was sucessfully processed", "Withdrawal Completed", JOptionPane.INFORMATION_MESSAGE);
                             }

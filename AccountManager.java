@@ -15,86 +15,96 @@ public class AccountManager {
     
     public String newAccount(String accountHolderName, String accountType, String initialDeposit) {
 
-                //Variables
-                String filename = "accounts.csv"; //Filename
-                BufferedReader reader = null; //Buffered reader
-                String line = ""; //Line string for storing each line
-                BufferedWriter fileWriter;
-                boolean accountNumberValid = false; //Valid account number tracking
-                Random random = new Random(); //Random
-                String newAccountNumber = "Not Generated"; //New Account Number string, currently ungenerated
-        
-                //Tries the code
-                try {
-                    //Instantiating file reader
-                    reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
-                    fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename
-        
-                    do {
+        //Variables
+        String filename = "accounts.csv"; //Filename
+        BufferedReader reader = null; //Buffered reader
+        String line = ""; //Line string for storing each line
+        BufferedWriter fileWriter;
+        boolean accountNumberValid = false; //Valid account number tracking
+        Random random = new Random(); //Random
+        String newAccountNumber = "Not Generated"; //New Account Number string, currently ungenerated
 
-                        newAccountNumber = ""; //Set newAccountNumber to blank
+        //Tries the code
+        try {
+            //Instantiating file reader
+            reader = new BufferedReader(new FileReader(filename)); //Passes file reader which passes filename
+            fileWriter = new BufferedWriter(new FileWriter(filename, true)); //Passes file writer which passes filename
 
-                        //Run 5 times to generate a 5 digit number
-                        for (int i = 0; i < 5; i++) {
+            do {
 
-                        //Generate account number
-                        newAccountNumber = newAccountNumber + Integer.toString(random.nextInt(7));
+                newAccountNumber = ""; //Set newAccountNumber to blank
 
-                        }
+                //Run 5 times to generate a 5 digit number
+                for (int i = 0; i < 5; i++) {
 
-                        int identicalNumberTracker = 0; //Keeping track of identical account numbers
+                //Generate account number
+                newAccountNumber = newAccountNumber + Integer.toString(random.nextInt(7));
 
-                        //Check account number
-                        while((line = reader.readLine()) != null) {
-
-                            //Split line string at each comma and store
-                            String[] accountString = line.split(","); //Split by comma
-        
-                            if (accountString[0].equals(newAccountNumber)) {
-        
-                                //If there's an identical number, add to tracker
-                                identicalNumberTracker++;
-                            }
-                        }
-
-                        if (identicalNumberTracker == 0) {
-
-                            //If there are no identical numbers, the program can proceed
-                            accountNumberValid = true;
-                        }
-
-                    } while (accountNumberValid == false);
-
-                    //Write at end of file account info
-                    fileWriter.write(System.lineSeparator() + newAccountNumber + "," + accountHolderName + "," + accountType + "," + initialDeposit);
-                    fileWriter.close();
-
-                    //Create transaction
-                    newTransaction(newAccountNumber, "Deposit", Double.parseDouble(initialDeposit));
                 }
-                catch(Exception e) { //Catches all exceptions
-        
-                    System.out.println("ERROR!!!!");
-                    e.printStackTrace();
-                }
-                finally {
-        
-                    //Closing reader
-                    try {
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                int identicalNumberTracker = 0; //Keeping track of identical account numbers
+
+                //Check account number
+                while((line = reader.readLine()) != null) {
+
+                    //Split line string at each comma and store
+                    String[] accountString = line.split(","); //Split by comma
+
+                    if (accountString[0].equals(newAccountNumber)) {
+
+                        //If there's an identical number, add to tracker
+                        identicalNumberTracker++;
                     }
                 }
 
-                //Return account number
-                return newAccountNumber;
+                if (identicalNumberTracker == 0) {
+
+                    //If there are no identical numbers, the program can proceed
+                    accountNumberValid = true;
+                }
+
+            } while (accountNumberValid == false);
+
+            //Write at end of file account info
+            fileWriter.write(System.lineSeparator() + newAccountNumber + "," + accountHolderName + "," + accountType + "," + initialDeposit);
+            fileWriter.close();
+
+            //Create transaction
+            newTransaction(newAccountNumber, "Deposit", Double.parseDouble(initialDeposit), true);
+        }
+        catch(Exception e) { //Catches all exceptions
+
+            System.out.println("ERROR!!!!");
+            e.printStackTrace();
+        }
+        finally {
+
+            //Closing reader
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-    public boolean newTransaction(String accountNumber, String action, double actionAmount) {
+        //Return account number
+        return newAccountNumber;
+    }
 
-        //Update balance method, return boolean value
-        boolean balanceUpdated = updateBalance(accountNumber, action ,actionAmount);
+    public boolean newTransaction(String accountNumber, String action, double actionAmount, boolean newAccount) {
+
+        //Instantiate updatedBalance boolean
+        boolean balanceUpdated;
+
+        if (!newAccount) { //If it's not a new account, operate as normal
+
+            //Update balance method, return boolean value
+            balanceUpdated = updateBalance(accountNumber, action, actionAmount);
+        }
+        else { //If it is new, don't update the balance, just pass
+
+            balanceUpdated = true;
+        }
 
         //If balance was valid and updated, proceed to writing into transactions.csv
         if (balanceUpdated) {
