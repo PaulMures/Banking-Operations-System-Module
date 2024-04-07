@@ -188,7 +188,7 @@ public class Bank {
                 try {
 
                     //If the integer is positive or 0
-                    if (Integer.parseInt(accountCInitialDepositField.getText()) >= 0) {
+                    if (Double.parseDouble(accountCInitialDepositField.getText()) >= 0) {
 
                         String newAccountNumber = accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
                         JOptionPane.showMessageDialog(null, ("Your account was created successfully!\nYour new account number is " + newAccountNumber), "Account Creation Completed", JOptionPane.INFORMATION_MESSAGE);
@@ -251,16 +251,16 @@ public class Bank {
                 try {
 
                     //Validate that the given number is not negative or 0
-                    if (Integer.parseInt(transactionAmountField.getText()) > 0) {
+                    if (Double.parseDouble(transactionAmountField.getText()) > 0) {
 
                         //Validate that the given number is not more than 1,000,000
-                        if (Integer.parseInt(transactionAmountField.getText()) <= 1000000) {
+                        if (Double.parseDouble(transactionAmountField.getText()) <= 1000000) {
 
                             //Check if account number is valid
                             if (accountManager.validateAccountNumber(accountNumField.getText())) {
 
                                 //Generate transaction
-                                accountManager.newTransaction(accountNumField.getText(), "Deposit", Integer.parseInt(transactionAmountField.getText()));
+                                accountManager.newTransaction(accountNumField.getText(), "Deposit", Double.parseDouble(transactionAmountField.getText()));
                                 JOptionPane.showMessageDialog(null, "Your deposit was sucessfully processed", "Deposit Completed", JOptionPane.INFORMATION_MESSAGE);
                             }
                             else {
@@ -298,13 +298,13 @@ public class Bank {
                 try {
 
                     //Validate that the given number is not negative or 0
-                    if (Integer.parseInt(transactionAmountField.getText()) > 0) {
+                    if (Double.parseDouble(transactionAmountField.getText()) > 0) {
 
                         //Check if account number is valid
                         if (accountManager.validateAccountNumber(accountNumField.getText())) {
 
                             //Generate transaction
-                            if (accountManager.newTransaction(accountNumField.getText(), "Withdraw", Integer.parseInt(transactionAmountField.getText()))) {
+                            if (accountManager.newTransaction(accountNumField.getText(), "Withdraw", Double.parseDouble(transactionAmountField.getText()))) {
 
                                 JOptionPane.showMessageDialog(null, "Your withdrawal was sucessfully processed", "Withdrawal Completed", JOptionPane.INFORMATION_MESSAGE);
                             }

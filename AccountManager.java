@@ -70,7 +70,7 @@ public class AccountManager {
                     fileWriter.close();
 
                     //Create transaction
-                    newTransaction(newAccountNumber, "Deposit", Integer.parseInt(initialDeposit));
+                    newTransaction(newAccountNumber, "Deposit", Double.parseDouble(initialDeposit));
                 }
                 catch(Exception e) { //Catches all exceptions
         
@@ -91,7 +91,7 @@ public class AccountManager {
                 return newAccountNumber;
             }
 
-    public boolean newTransaction(String accountNumber, String action, int actionAmount) {
+    public boolean newTransaction(String accountNumber, String action, double actionAmount) {
 
         //Update balance method, return boolean value
         boolean balanceUpdated = updateBalance(accountNumber, action ,actionAmount);
@@ -113,23 +113,23 @@ public class AccountManager {
             if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
 
                 //Put 0 in front
-                day = "0" + Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                day = "0" + Double.toString(calendar.get(Calendar.DAY_OF_MONTH));
             }
             else {
-                day = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+                day = Double.toString(calendar.get(Calendar.DAY_OF_MONTH));
             }
 
             //If month is <10th
             if (calendar.get(Calendar.MONTH) < 10) {
         
                 //Put 0 in front
-                month = "0" + Integer.toString(calendar.get(Calendar.MONTH));
+                month = "0" + Double.toString(calendar.get(Calendar.MONTH));
             }
             else {
-                month = Integer.toString(calendar.get(Calendar.MONTH));
+                month = Double.toString(calendar.get(Calendar.MONTH));
             }
 
-            year = Integer.toString(calendar.get(Calendar.YEAR)); //Year string
+            year = Double.toString(calendar.get(Calendar.YEAR)); //Year string
 
             String date = (day + "-" + month + "-" + year); //Sets string to Day-Month-Year
 
@@ -249,7 +249,7 @@ public class AccountManager {
 
     }
 
-    public boolean updateBalance(String accountNumber, String action, int actionAmount) {
+    public boolean updateBalance(String accountNumber, String action, double actionAmount) {
 
         //Variables
         String filename = "accounts.csv"; //Filename
@@ -275,7 +275,7 @@ public class AccountManager {
                     //If withdrawal
                     if (action.equals("Withdraw")) {
 
-                        if (actionAmount > Integer.parseInt(accountString[3])) {
+                        if (actionAmount > Double.parseDouble(accountString[3])) {
 
                             return false;
 
@@ -283,14 +283,14 @@ public class AccountManager {
                         else {
 
                             //New balance
-                            newBalance = Integer.toString((Integer.parseInt(accountString[3])) - (actionAmount));
+                            newBalance = Double.toString((Double.parseDouble(accountString[3])) - (actionAmount));
                         }
                         
                     }
                     else { //Deposit
 
                         //New balance
-                        newBalance = Integer.toString((Integer.parseInt(accountString[3])) + (actionAmount));
+                        newBalance = Double.toString((Double.parseDouble(accountString[3])) + (actionAmount));
                     }
 
                     //Rewrite line then store
@@ -361,7 +361,7 @@ public class AccountManager {
                 return true;
             }
             else {
-                
+
                 //Account doesn't exist
                 return false;
             }
