@@ -11,7 +11,7 @@ import javax.swing.*;
 public class Bank {
 
     //Instantiation
-    AccountManager accountManager = new AccountManager();
+    AccountManager accountManager = new AccountManager(); //AccountManager class object
     JFrame frame = new JFrame(); //JFrame
     JPanel masterPanel = new JPanel(); //Master panel to hold all other panels
     JPanel logoPanel = new JPanel(); //Logo panel
@@ -30,6 +30,7 @@ public class Bank {
         createAccountButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Set only accountCreator panel visible
                 accountCreator.setVisible(true);
                 transactionKiosk.setVisible(false);
                 balanceInquiry.setVisible(false);
@@ -42,6 +43,7 @@ public class Bank {
         transactionKButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Set only transactionKiosk panel to visible
                 accountCreator.setVisible(false);
                 transactionKiosk.setVisible(true);
                 balanceInquiry.setVisible(false);
@@ -54,6 +56,7 @@ public class Bank {
         balanceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Set only balanceInquiry panel to visible
                 accountCreator.setVisible(false);
                 transactionKiosk.setVisible(false);
                 balanceInquiry.setVisible(true);
@@ -66,6 +69,7 @@ public class Bank {
         transactionHButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Set only transactionHistory visible
                 accountCreator.setVisible(false);
                 transactionKiosk.setVisible(false);
                 balanceInquiry.setVisible(false);
@@ -74,16 +78,18 @@ public class Bank {
         });
 
         //Logo Panel -------------------------------------------------------------
-        logoPanel.setLayout(null);
+        logoPanel.setLayout(null); //No layout manager
         logoPanel.setBackground(Color.GRAY);
         logoPanel.setBounds(0,0,700,100);
 
+        //BB logo (colors and squares)
         JLabel logo = new JLabel("BB");
         logo.setBackground(Color.RED);
         logo.setForeground(Color.RED);
         logo.setBounds(15,5,70,70);
         logo.setOpaque(true);
 
+        //Text within the BB logo
         JLabel logoText = new JLabel(" BB");
         logoText.setForeground(Color.GRAY);
         logoText.setBackground(new Color(150,0,0));
@@ -91,11 +97,13 @@ public class Bank {
         logoText.setFont(new Font("Times", Font.BOLD, 35));
         logoText.setOpaque(true);
 
+        //Bank of Banking title
         JLabel title = new JLabel("Bank of Banking");
         title.setBounds(150,25,400,50);
         title.setForeground(Color.BLACK);
         title.setFont(new Font("Times", Font.BOLD, 30));
 
+        //Add labels to panel
         logoPanel.add(logoText);
         logoPanel.add(logo);
         logoPanel.add(title);
@@ -103,6 +111,8 @@ public class Bank {
         //Button Panel -------------------------------------------------------------
         buttonPanel.setLayout(new GridLayout(1, 4));
         buttonPanel.setBounds(0,100,700,100);
+
+        //Add buttons to panel
         buttonPanel.add(createAccountButton); 
         buttonPanel.add(transactionKButton);
         buttonPanel.add(balanceButton);
@@ -111,6 +121,8 @@ public class Bank {
         //Master Panel -------------------------------------------------------------
         masterPanel.setBounds(0,0,700,700);
         masterPanel.setLayout(null);
+
+        //Add panels to master panel
         masterPanel.add(logoPanel);
         masterPanel.add(buttonPanel);   
         masterPanel.add(functionPane);
@@ -119,6 +131,7 @@ public class Bank {
         functionPane.setBounds(0,200,700,700);
         functionPane.setOpaque(true);
 
+        //Add panels to layered pane
         functionPane.add(accountCreator, Integer.valueOf(0));    
         functionPane.add(transactionKiosk, Integer.valueOf(0));
         functionPane.add(balanceInquiry, Integer.valueOf(0));
@@ -137,17 +150,17 @@ public class Bank {
         accountCreator.add(accountLabel);
 
         //Enter labels
-        JLabel accountCNameLabel = new JLabel("Enter account name here:"); //Account name field
+        JLabel accountCNameLabel = new JLabel("Enter account name here:"); //Account name field label
         accountCNameLabel.setFont(new Font("Times", Font.BOLD, 15));
         accountCNameLabel.setBounds(25,100,200,20);
         accountCreator.add(accountCNameLabel);
 
-        JLabel accountCInitialDepositLabel = new JLabel("Enter initial deposit here here:    $"); //Initial deposit field
+        JLabel accountCInitialDepositLabel = new JLabel("Enter initial deposit here here:    $"); //Initial deposit field label
         accountCInitialDepositLabel.setFont(new Font("Times", Font.BOLD, 15));
         accountCInitialDepositLabel.setBounds(25,200,300,20);
         accountCreator.add(accountCInitialDepositLabel);
 
-        JLabel accountCTypeLabel = new JLabel("Enter account type here:"); //Account type field
+        JLabel accountCTypeLabel = new JLabel("Enter account type here:"); //Account type field label
         accountCTypeLabel.setFont(new Font("Times", Font.BOLD, 15));
         accountCTypeLabel.setBounds(25,300,200,20);
         accountCreator.add(accountCTypeLabel);
@@ -171,8 +184,10 @@ public class Bank {
         generateAccount.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Try to check if the input is a real integer
                 try {
 
+                    //If the integer is positive or 0
                     if (Integer.parseInt(accountCInitialDepositField.getText()) >= 0) {
 
                         String newAccountNumber = accountManager.newAccount(accountCNameField.getText(), accountCTypeField.getText(), accountCInitialDepositField.getText());
@@ -201,18 +216,18 @@ public class Bank {
         transactionKiosk.setVisible(false);
 
         //Title
-        JLabel transactionLabel = new JLabel("Transaction");
+        JLabel transactionLabel = new JLabel("Transaction"); //Transaction title label
         transactionLabel.setFont(new Font("Times", Font.BOLD, 20));
         transactionLabel.setBounds(25,25,200,25);
         transactionKiosk.add(transactionLabel);
 
         //Enter labels
-        JLabel accountTNumLabel = new JLabel("Enter account number here:"); //Account number field
+        JLabel accountTNumLabel = new JLabel("Enter account number here:"); //Account number field label
         accountTNumLabel.setFont(new Font("Times", Font.BOLD, 15));
         accountTNumLabel.setBounds(25,100,225,20);
         transactionKiosk.add(accountTNumLabel);
 
-        JLabel transactionAmountLabel = new JLabel("Enter transaction amount here:    $"); //Transaction amount field
+        JLabel transactionAmountLabel = new JLabel("Enter transaction amount here:    $"); //Transaction amount field label
         transactionAmountLabel.setFont(new Font("Times", Font.BOLD, 15));
         transactionAmountLabel.setBounds(25,200,300,20);
         transactionKiosk.add(transactionAmountLabel);
@@ -232,9 +247,10 @@ public class Bank {
         generateDeposit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Try to see if integer is a valid integer
                 try {
 
-                    //Validate that the given number is a valid integer and is not negative or 0
+                    //Validate that the given number is not negative or 0
                     if (Integer.parseInt(transactionAmountField.getText()) > 0) {
 
                         //Validate that the given number is not more than 1,000,000
@@ -278,9 +294,10 @@ public class Bank {
         generateWithdrawal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //Check if the given integer is a valid integer
                 try {
 
-                    //Validate that the given number is a valid integer and is not negative or 0
+                    //Validate that the given number is not negative or 0
                     if (Integer.parseInt(transactionAmountField.getText()) > 0) {
 
                         //Check if account number is valid
@@ -323,13 +340,13 @@ public class Bank {
         balanceInquiry.setVisible(false);
 
         //Title
-        JLabel balanceInquiryLabel = new JLabel("Balance Inquiry");
+        JLabel balanceInquiryLabel = new JLabel("Balance Inquiry"); //Balance inquiry title label
         balanceInquiryLabel.setFont(new Font("Times", Font.BOLD, 20));
         balanceInquiryLabel.setBounds(25,25,200,25);
         balanceInquiry.add(balanceInquiryLabel);
 
         //Enter labels
-        JLabel accountBILabel = new JLabel("Enter account number here:"); //Account number field
+        JLabel accountBILabel = new JLabel("Enter account number here:"); //Account number field label
         accountBILabel.setFont(new Font("Times", Font.BOLD, 15));
         accountBILabel.setBounds(25,100,225,20);
         balanceInquiry.add(accountBILabel);
@@ -353,8 +370,10 @@ public class Bank {
         generateBalanceInquiry.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //If the account number is valid
                 if (accountManager.validateAccountNumber(accountBField.getText())) {
 
+                    //Run balance inquiry and return balance
                     String returnedBalance = accountManager.balanceInquiry(accountBField.getText());
                     returnedBalanceLabel.setText("Balance: $" + returnedBalance);
                 }
@@ -374,13 +393,13 @@ public class Bank {
         transactionHistory.setVisible(false);
 
         //Title
-        JLabel transactionHistoryLabel = new JLabel("Transaction History");
+        JLabel transactionHistoryLabel = new JLabel("Transaction History"); //Transaction history title label
         transactionHistoryLabel.setFont(new Font("Times", Font.BOLD, 20));
         transactionHistoryLabel.setBounds(25,25,250,25);
         transactionHistory.add(transactionHistoryLabel);
 
         //Enter labels
-        JLabel accountTHNumberLabel = new JLabel("Enter account number here:"); //Account number field
+        JLabel accountTHNumberLabel = new JLabel("Enter account number here:"); //Account number field label
         accountTHNumberLabel.setFont(new Font("Times", Font.BOLD, 15));
         accountTHNumberLabel.setBounds(25,100,225,20);
         transactionHistory.add(accountTHNumberLabel);
@@ -400,7 +419,7 @@ public class Bank {
         JTextArea returnedTransactionsArea = new JTextArea("");
         returnedTransactionsArea.setFont(new Font("Times", Font.PLAIN, 20));
         returnedTransactionsArea.setBounds(25,200,600,250);
-        returnedTransactionsArea.setEditable(false);
+        returnedTransactionsArea.setEditable(false); //Lock field to not be editable
         returnedTransactionsArea.setOpaque(true);
         returnedTransactionsArea.setVisible(true);
 
@@ -413,8 +432,10 @@ public class Bank {
         generateTransactionHistory.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
+                //If the account number is valid
                 if (accountManager.validateAccountNumber(accountTHNumberField.getText())) {
 
+                    //Run transactionHistory and return history string
                     String returnedTransactions = accountManager.transactionHistory(accountTHNumberField.getText());
                     returnedTransactionsArea.setText("Account Number,Transaction Amount,Date\n" + returnedTransactions);
                 }
@@ -433,7 +454,7 @@ public class Bank {
         frame.setMinimumSize(new Dimension(700,700));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Bank Operator");
-        frame.setLayout(null);
+        frame.setLayout(null); //No layout manager for custom positioning
         frame.pack();
         frame.setVisible(true);
 

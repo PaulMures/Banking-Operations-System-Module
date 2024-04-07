@@ -34,6 +34,7 @@ public class AccountManager {
 
                         newAccountNumber = ""; //Set newAccountNumber to blank
 
+                        //Run 5 times to generate a 5 digit number
                         for (int i = 0; i < 5; i++) {
 
                         //Generate account number
@@ -92,8 +93,10 @@ public class AccountManager {
 
     public boolean newTransaction(String accountNumber, String action, int actionAmount) {
 
+        //Update balance method, return boolean value
         boolean balanceUpdated = updateBalance(accountNumber, action ,actionAmount);
 
+        //If balance was valid and updated, proceed to writing into transactions.csv
         if (balanceUpdated) {
 
                 //Write transaction -------------------------------------------------------------
@@ -202,7 +205,7 @@ public class AccountManager {
         String filename = "transactions.csv"; //Filename
         BufferedReader reader = null; //Buffered reader
         String line = ""; //Line string for storing each line
-        String transactions = "";
+        String transactions = ""; //Transaction history string
 
         //Tries the code
         try {
@@ -220,6 +223,7 @@ public class AccountManager {
 
                     if (accountString[0].equals(accountNumber)) {
                         
+                        //Add to history string
                         transactions = transactions + "\n" + line;
                     }
                 }
@@ -344,6 +348,7 @@ public class AccountManager {
                 //Split line string at each comma and store
                 String[] accountString = line.split(","); //Split by comma
 
+                //If the account has been found
                 if (accountString[0].equals(accountNumber)) {
                     
                     validAccountTracker++;
@@ -352,9 +357,12 @@ public class AccountManager {
 
             if (validAccountTracker > 0) {
 
+                //Account exists
                 return true;
             }
             else {
+                
+                //Account doesn't exist
                 return false;
             }
         }
